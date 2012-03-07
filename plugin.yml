@@ -1,0 +1,11 @@
+name: Rifter
+author: aufdemrand
+version: 0.1
+main: net.aufdemrand.rifter.Rifter
+depend:
+  - Citizens
+commands:
+  rifter:
+    description: Lists rifter commands.
+    usage: /rifter
+    permission: rifter.basic

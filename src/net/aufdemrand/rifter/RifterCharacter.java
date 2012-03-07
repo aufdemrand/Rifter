@@ -4,8 +4,10 @@ import net.citizensnpcs.api.exception.NPCLoadException;
 import net.citizensnpcs.api.trait.Character;
 import net.citizensnpcs.api.trait.SaveId;
 import net.citizensnpcs.api.util.DataKey;
+import net.citizensnpcs.api.exception.NPCLoadException;
+import net.citizensnpcs.api.npc.NPC;
 
-@SaveId("Rifter")
+@SaveId("rifter")
 public class RifterCharacter extends Character {
 
 	@Override
