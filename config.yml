@@ -1,0 +1,9 @@
+# Rifter Configuration
+cooldown-in-seconds: 45    # Time between each Parrot noise/message/etc.
+chatter-range: 25          # Distance from Parrot needed to be to hear it.
+
+
+# Backups for interface
+
+
+# Individual Parrot Settings (No need to edit, this will populate by itself!)

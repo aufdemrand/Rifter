@@ -25,6 +25,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Rifter extends JavaPlugin {
 
+	public Map<Player, String> RifterInterface = new HashMap<Player, String>();
+	public Map<Player, String> CurrentPlayerRift = new HashMap<Player, String>();
+	public Map<Player, String> SavedReplacementBlock = new HashMap<Player, String>();
+	
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String cmdLabel, String[] args) {
 
@@ -85,39 +89,45 @@ public class Rifter extends JavaPlugin {
 		else if (args[0].equalsIgnoreCase("new") && args[1].equalsIgnoreCase("rift")) {
 
 			//if (player.getMetadata("CreateRiftStatus").isEmpty()) { 
-
+            			
+			//if (RifterInterface.get(player).equals(null)) {   // RifterInterface.put(player, "OK");
+            // }
+			
+			//RifterInterface.containsKey
+			if (!RifterInterface.containsKey(player) || RifterInterface.get(player).toString().equals("OK")) {
+			
 				player.sendMessage(ChatColor.RED + "-------- RIFT CREATER ----------");
-				player.sendMessage(ChatColor.GREEN + "You have entered the " + ChatColor.MAGIC + "RIFT CREATER" + ChatColor.GREEN + ".");
+				player.sendMessage(ChatColor.GREEN + "You have entered the " + ChatColor.GOLD + "RIFT CREATER" + ChatColor.GREEN + ".");
 				player.sendMessage(ChatColor.GREEN + "All chat is suspended for the duration");
-				player.sendMessage(ChatColor.GREEN + "of the setup. Say 'exit setup' to cancel.");
-				player.sendMessage(ChatColor.GREEN + "");
-				ThisNPC.chat(player, "Where should the entry to the rift be located at?");
-				player.sendMessage(ChatColor.GRAY + "Say 'here' to set the location beneath you.");
+				player.sendMessage(ChatColor.GREEN + "of the setup. Say 'exit' to cancel.");
+				player.sendMessage(ChatColor.GREEN + "Let's get started.");
+				ThisNPC.chat(player, "What is the name of this rift?");
+				player.sendMessage(ChatColor.GRAY + "Say the name of the rift, or use");
+				player.sendMessage(ChatColor.GRAY + "'/rifter reset interface' to start over.");
 
-				String string1 = "This is a string.";
+				RifterInterface.put(player, "Waiting on name of rift.");
 				
-				player.setMetadata("CreateRiftStatus", new FixedMetadataValue(this, string1));
-
 				return true;
 
-			//}
+			}
 
-			//else { 
+			else { 
 
-			//	player.sendMessage(ChatColor.GRAY + "You must first finish the rift you are creating,");	
-			//	player.sendMessage(ChatColor.GRAY + "or use '/rift creater reset' to start over.");
+				player.sendMessage(ChatColor.GRAY + "You must first finish the rift you working on,");	
+				player.sendMessage(ChatColor.GRAY + "or use '/rifter reset interface' to start over.");
 
-			//} 
+			} 
 
 			// return true;
 		}
 
-		else if (args[0].equalsIgnoreCase("creater") && args[1].equalsIgnoreCase("reset")) {
+		else if (args[0].equalsIgnoreCase("reset") && args[1].equalsIgnoreCase("interface")) {
 			
-			player.removeMetadata("CreateRiftStatus", this);
+			RifterInterface.put(player, "OK");
 			
-			player.sendMessage(ChatColor.GRAY + "Rift creation process cleared.");
-			player.sendMessage(ChatColor.GRAY + "Use '/rift create new' to start over.");
+			player.sendMessage(ChatColor.GRAY + "Rift interface cleared.");
+			player.sendMessage(ChatColor.GRAY + "Use '/rifter new rift' to make a new rift,");
+			player.sendMessage(ChatColor.GRAY + "or '/rifter modify rift' to edit an existing.");
 			
 		}
 
@@ -126,7 +136,11 @@ public class Rifter extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
+
+		this.getConfig().set("backup.RifterInterface", RifterInterface);
+		
 		getLogger().log(Level.INFO, " v" + getDescription().getVersion() + " disabled.");
+		
 	}
 
 	@Override
@@ -135,6 +149,8 @@ public class Rifter extends JavaPlugin {
 		this.getConfig().options().copyDefaults(true);
 		saveConfig();  
 
+		List<Map<?, ?>> InterfaceBackup = this.getConfig().getMapList("backups.RifterInterface");
+		
 		CitizensAPI.getCharacterManager().register(RifterCharacter.class);
 		getServer().getPluginManager().registerEvents(new RifterListener(this), this);
 
